@@ -4,6 +4,12 @@ using UnityEngine;
 
 public enum Type { Rock, Paper, Scissors };
 
+/*
+ * rock x scissors
+ * paper x rock
+ * scissors x paper
+ */
+
 public class Piece : MonoBehaviour
 {
     //[System.NonSerialized]

@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
 
     public List<Sprite> pieceSprites;
 
+    public Player player1;
+    public Player player2;
+    public Player currentPlayer;
+
+    public Type currentTypeMode;
+
     public Board board;
 
     private void Awake()
@@ -93,6 +99,23 @@ public class GameManager : MonoBehaviour
 
         setupBoard();
        
+    }
+
+    void turn()
+    {
+        if (currentPlayer.color == player1.color)
+        {
+            currentPlayer = player2;
+        }
+        else if (currentPlayer.color == player2.color)
+        {
+            currentPlayer = player1;
+        }
+        else
+        {
+            // for the first turn
+            currentPlayer = player1;
+        }
     }
 
     void Update()
