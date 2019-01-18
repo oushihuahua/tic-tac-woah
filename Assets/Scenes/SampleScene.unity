@@ -1364,5 +1364,11 @@ PrefabInstance:
       propertyPath: timer
       value: 
       objectReference: {fileID: 180921284}
+    - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
+        type: 3}
+      propertyPath: barrierSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4e543a9559cf3e84fb25bbdcd76688de,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9717f6e2f6a804645aa2fa0eadc38d2a, type: 3}
