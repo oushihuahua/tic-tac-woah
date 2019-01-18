@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     public Board board;
 
+    [System.NonSerialized]
+    public bool endTurn;
+
     private void Awake()
     {
         //Check if instance already exists
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         Time.timeScale = 1f;
+        endTurn = false;
     }
 
     void positionBox(BoardBox box)
@@ -98,11 +102,18 @@ public class GameManager : MonoBehaviour
         );
 
         setupBoard();
-       
+
+        /*
+         * 
+         * set up barriers at the beginning of the game
+         * 
+         */
+
     }
 
     void turn()
     {
+        // determine who's turn it is
         if (currentPlayer.color == player1.color)
         {
             currentPlayer = player2;
@@ -116,10 +127,17 @@ public class GameManager : MonoBehaviour
             // for the first turn
             currentPlayer = player1;
         }
+
+        while (!endTurn)
+        {
+
+        }
+
+
     }
 
     void Update()
     {
-        
+        turn();
     }
 }
