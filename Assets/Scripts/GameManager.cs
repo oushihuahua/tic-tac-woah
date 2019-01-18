@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum Color { Red, Blue };
-
+public enum GameStatus {Idle, SetBarrier, Fight, Finish};
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
@@ -12,17 +12,30 @@ public class GameManager : MonoBehaviour
     // specifies the amount of rows and columns on the board
     public int amtRows;
     public int amtColumns;
-
     public List<Sprite> pieceSprites;
+    public Board board;
 
     public Player player1;
     public Player player2;
     public Player currentPlayer;
+    public UIManager uimanager;
+
+    public GameStatus status;
+
+    //time each palyer takes to set barrier
+    public float barrierTime;
+    //the maximum time of each turn
+    public float everyTurnMaxTime;
+    //maximum barriers for each player
+    public int maxBarriers;
 
     public Type currentTypeMode;
 
-    public Board board;
+    
 
+    public Timer timer;
+    
+    
     private void Awake()
     {
         //Check if instance already exists
@@ -98,23 +111,19 @@ public class GameManager : MonoBehaviour
 
         // based on the amt of rows and columns, change the position of the board to make sure it's centered
         board.gameObject.transform.position = new Vector3 (Screen.width*0.5f,Screen.height*0.5f,0.0f);
+        status = GameStatus.Idle;
         setupBoard();
        
     }
 
     void turn()
     {
-        if (currentPlayer.color == player1.color)
+        if (currentPlayer==player1)
         {
             currentPlayer = player2;
         }
-        else if (currentPlayer.color == player2.color)
-        {
-            currentPlayer = player1;
-        }
         else
         {
-            // for the first turn
             currentPlayer = player1;
         }
     }
@@ -123,4 +132,27 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    void FixedUpdate()
+    {
+       if(status == GameStatus.Fight)
+        {
+
+        }else if(status == GameStatus.SetBarrier)
+        {
+            if (Time.fixedTime - timer.globalStartTime > 2*barrierTime)
+            {
+                status = GameStatus.Fight;
+                //TBC
+                //1.process barriers
+                //2.reset timer
+                //3.change palyer
+            }else if(Time.fixedTime - timer.globalStartTime > barrierTime && currentPlayer == player1)
+            {
+                currentPlayer = player2;
+            }
+        }
+    }
+    //Game start and time running
+    
 }

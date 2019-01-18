@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Type { Rock, Paper, Scissors };
+public enum Type { Rock, Paper, Scissors, Barrier };
 
 /*
  * rock x scissors
