@@ -7,9 +7,11 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
     public GameObject pieceChoicePanel;
+    public GameObject piecePrefab;
 
     public Text currentPlayerText;
     public Text currentModeText;
+    public Text errorText;
 
     private void Awake()
     {
@@ -29,19 +31,51 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    IEnumerator flashErrorText(string text)
+    {
+        errorText.text = text;
+        errorText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        errorText.gameObject.SetActive(false);
+    }
+
+    public void OnClickBox(BoardBox clickedBox)
+    {
+        if (GameManager.instance.status == GameStatus.Fight)
+        {
+            if (clickedBox.boxContent == BoxContent.Barrier) {
+                StartCoroutine(flashErrorText("Can't place anything in a box with a barrier!"));
+                return;
+            }
+
+            Color curColor = GameManager.instance.currentPlayer.color;
+            int buffer = 0;
+            if (curColor == Color.Blue)
+            {
+                buffer += 3;
+            }
+
+            if (clickedBox.boxContent == BoxContent.Empty)
+            {
+                GameObject newPiece = Instantiate(piecePrefab, clickedBox.transform);
+                clickedBox.GetComponent<Image>().sprite = GameManager.instance.pieceSprites[(int)GameManager.instance.currentTypeMode + buffer];
+            }
+        }
+    }
+
     public void OnClickModeButton(string type)
     {
-        if (type == "rock")
+        if (type == "rock" && GameManager.instance.status != GameStatus.SetBarrier)
         {
             GameManager.instance.currentTypeMode = Type.Rock;
             currentModeText.text = "Rock Mode";
         }
-        else if (type == "scissor")
+        else if (type == "scissor" && GameManager.instance.status != GameStatus.SetBarrier)
         {
             GameManager.instance.currentTypeMode = Type.Scissors;
             currentModeText.text = "Scissors Mode";
         }
-        else
+        else if (type == "paper" && GameManager.instance.status != GameStatus.SetBarrier)
         {
             GameManager.instance.currentTypeMode = Type.Paper;
             currentModeText.text = "Paper Mode";
@@ -66,6 +100,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentPlayer = GameManager.instance.player1;
         GameManager.instance.currentTypeMode = Type.Barrier;
         currentModeText.text = "Set Barrier Mode";
+        GameManager.instance.status = GameStatus.Fight;
     }
 
 }

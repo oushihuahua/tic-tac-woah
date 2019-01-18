@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Type { Rock, Paper, Scissors, Barrier };
 
@@ -15,9 +16,11 @@ public class Piece : MonoBehaviour
     //[System.NonSerialized]
     public Type type;
     Player owner;
+    Image image;
 
-    void Start()
+    void Awake()
     {
-        // set up sprite based on the type    
+        owner = GameManager.instance.currentPlayer;
+        type = GameManager.instance.currentTypeMode;
     }
 }

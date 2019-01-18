@@ -22,6 +22,15 @@ public class BoardBox : MonoBehaviour
     [System.NonSerialized]
     public Piece ownedByThisPlayer;
 
-   
-    // variable to reference what type (rock, paper, scissor) is on this board piece
+    private void Start()
+    {
+        Button button = GetComponent<Button>();
+        button.onClick.AddListener(() =>
+        {
+            UIManager.instance.OnClickBox(gameObject.GetComponent<BoardBox>());
+        });
+
+
+        // variable to reference what type (rock, paper, scissor) is on this board piece
+    }
 }
