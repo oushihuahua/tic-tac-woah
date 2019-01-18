@@ -59,6 +59,13 @@ public class UIManager : MonoBehaviour
             currentPlayerText.text = "Player 2's Turn";
         }
     }
-
+    public void OnClickStartGameButton()
+    {
+        GameManager.instance.timer.globalStartTime = Time.fixedTime;
+        GameManager.instance.status = GameStatus.SetBarrier;
+        GameManager.instance.currentPlayer = GameManager.instance.player1;
+        GameManager.instance.currentTypeMode = Type.Barrier;
+        currentModeText.text = "Set Barrier Mode";
+    }
 
 }
