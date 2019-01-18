@@ -409,7 +409,7 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate()
     {
-       /*
+       
        if(status == GameStatus.Fight)
         {
 
@@ -426,7 +426,7 @@ public class GameManager : MonoBehaviour
             {
                 currentPlayer = player2;
             }
-        }*/
+        }
     }
     //Game start and time running
     
