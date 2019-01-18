@@ -49,8 +49,13 @@ public class GameManager : MonoBehaviour
         float widthBox = box.gameObject.GetComponent<RectTransform>().rect.width;
         float heightBox = box.gameObject.GetComponent<RectTransform>().rect.height;
 
-        xPos = box.gameObject.GetComponentInParent<Transform>().position.x + (widthBox * box.rowNum);
-        yPos = box.gameObject.GetComponentInParent<Transform>().position.y - (heightBox * box.colNum);
+        //board locate at center of the screen 
+        //relative_column and relative_row shows how far this box to the center
+        float relative_column = (float) box.colNum - (float) amtColumns / 2.0f;
+        float relative_row = (float) box.rowNum - (float) amtRows / 2.0f;
+
+        xPos = box.gameObject.GetComponentInParent<Transform>().position.x + (widthBox * relative_column);
+        yPos = box.gameObject.GetComponentInParent<Transform>().position.y - (heightBox * relative_row);
 
         box.gameObject.transform.position = new Vector3(xPos, yPos, 0.0f);
     }
@@ -84,19 +89,14 @@ public class GameManager : MonoBehaviour
         }
 
         board.board = newBoard;
+        board.transform.localScale=new Vector3(1.0f, 1.0f, 1.0f);
     }
 
     void Start()
     {
 
         // based on the amt of rows and columns, change the position of the board to make sure it's centered
-        board.gameObject.transform.position = new Vector3
-        (
-            board.gameObject.transform.position.x - (board.boardBoxPrefab.gameObject.GetComponent<RectTransform>().rect.width / 2 * (amtRows - 1)),
-            board.gameObject.transform.position.y + (board.boardBoxPrefab.gameObject.GetComponent<RectTransform>().rect.height / 2 * (amtColumns - 1)),
-            0.0f
-        );
-
+        board.gameObject.transform.position = new Vector3 (480.0f,270.0f, 0.0f);
         setupBoard();
        
     }
