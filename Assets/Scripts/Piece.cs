@@ -15,7 +15,8 @@ public class Piece : MonoBehaviour
 {
     //[System.NonSerialized]
     public Type type;
-    Player owner;
+    //[System.NonSerialized]
+    public Player owner;
     Image image;
 
     void Awake()

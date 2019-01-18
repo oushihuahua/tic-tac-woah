@@ -17,10 +17,11 @@ public class BoardBox : MonoBehaviour
     public int colNum;
     //[System.NonSerialized]
     public BoxContent boxContent;
+    public bool isSequence;
 
-    // variable to reference which player has this board piece
+    // variable to reference which piece is on this box
     [System.NonSerialized]
-    public Piece ownedByThisPlayer;
+    public Piece currentPiece;
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class BoardBox : MonoBehaviour
             UIManager.instance.OnClickBox(gameObject.GetComponent<BoardBox>());
         });
 
-
-        // variable to reference what type (rock, paper, scissor) is on this board piece
+        isSequence = false;
+        currentPiece = null;
     }
 }

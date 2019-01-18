@@ -59,6 +59,10 @@ public class UIManager : MonoBehaviour
             {
                 GameObject newPiece = Instantiate(piecePrefab, clickedBox.transform);
                 clickedBox.GetComponent<Image>().sprite = GameManager.instance.pieceSprites[(int)GameManager.instance.currentTypeMode + buffer];
+                clickedBox.boxContent = BoxContent.Piece;
+                clickedBox.currentPiece = newPiece.GetComponent<Piece>();
+                ++GameManager.instance.currentPlayer.score;
+                GameManager.instance.processPlay(clickedBox);
             }
         }
     }
@@ -100,7 +104,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.currentPlayer = GameManager.instance.player1;
         GameManager.instance.currentTypeMode = Type.Barrier;
         currentModeText.text = "Set Barrier Mode";
-        GameManager.instance.status = GameStatus.Fight;
+        //GameManager.instance.status = GameStatus.Fight;
     }
 
 }
