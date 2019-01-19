@@ -118,6 +118,10 @@ public class GameManager : MonoBehaviour
         BoardBox rightBox = null;
         BoardBox upBox = null;
         BoardBox downBox = null;
+        BoardBox posDiagonal = null;
+        BoardBox negDiagonal = null;
+        BoardBox leftDiagonal = null;
+        BoardBox rightDiagonal = null;
         if (box.rowNum + 1 < amtRows)
         {
             rightBox = board.board[box.rowNum + 1][box.colNum];
@@ -174,6 +178,66 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        if (box.rowNum + 1 < amtRows && box.colNum + 1 < amtColumns)
+        {
+            posDiagonal = board.board[box.rowNum + 1][box.colNum + 1];
+            if (posDiagonal.isDiagonalSequence && isPair(box, posDiagonal)) return true;
+            else if (box.rowNum + 2 < amtRows && box.colNum + 2 < amtColumns)
+            {
+                if (isPair(box, posDiagonal) && isPair(posDiagonal, board.board[box.rowNum + 2][box.colNum + 2]))
+                {
+                    posDiagonal.isDiagonalSequence = true;
+                    board.board[box.rowNum + 2][box.colNum + 2].isDiagonalSequence = true;
+                    box.isDiagonalSequence = true;
+                    return true;
+                }
+            }
+        }
+        if (box.rowNum - 1 >= 0 && box.colNum - 1 >= 0)
+        {
+            negDiagonal = board.board[box.rowNum - 1][box.colNum - 1];
+            if (negDiagonal.isDiagonalSequence && isPair(box, negDiagonal)) return true;
+            else if (box.rowNum - 2 >= 0 && box.colNum - 2 >= 0)
+            {
+                if (isPair(box, negDiagonal) && isPair(negDiagonal, board.board[box.rowNum - 2][box.colNum - 2]))
+                {
+                    negDiagonal.isDiagonalSequence = true;
+                    board.board[box.rowNum - 2][box.colNum - 2].isDiagonalSequence = true;
+                    box.isDiagonalSequence = true;
+                    return true;
+                }
+            }
+        }
+        if (box.rowNum + 1 < amtRows && box.colNum - 1 >= 0)
+        {
+            leftDiagonal = board.board[box.rowNum + 1][box.colNum - 1];
+            if (leftDiagonal.isDiagonalSequence && isPair(box, leftDiagonal)) return true;
+            else if (box.rowNum + 2 < amtRows && box.colNum - 2 >= 0)
+            {
+                if (isPair(box, leftDiagonal) && isPair(leftDiagonal, board.board[box.rowNum + 2][box.colNum - 2]))
+                {
+                    leftDiagonal.isDiagonalSequence = true;
+                    board.board[box.rowNum + 2][box.colNum - 2].isDiagonalSequence = true;
+                    box.isDiagonalSequence = true;
+                    return true;
+                }
+            }
+        }
+        if (box.rowNum - 1 >= 0 && box.colNum + 1 < amtColumns)
+        {
+            rightDiagonal = board.board[box.rowNum - 1][box.colNum + 1];
+            if (rightDiagonal.isDiagonalSequence && isPair(box, rightDiagonal)) return true;
+            else if (box.rowNum - 2 >= 0 && box.colNum + 2 < amtColumns)
+            {
+                if (isPair(box, rightDiagonal) && isPair(rightDiagonal, board.board[box.rowNum - 2][box.colNum + 2]))
+                {
+                    rightDiagonal.isDiagonalSequence = true;
+                    board.board[box.rowNum - 2][box.colNum + 2].isDiagonalSequence = true;
+                    box.isDiagonalSequence = true;
+                    return true;
+                }
+            }
+        }
         if (isPair(box, upBox) && isPair(box, downBox))
         {           
             upBox.isSequence = true;
@@ -186,7 +250,20 @@ public class GameManager : MonoBehaviour
             rightBox.isSequence = true;
             return true;
         }
-        // TODO: diagonal
+        if (isPair(box, posDiagonal) && isPair(box, negDiagonal))
+        {
+            posDiagonal.isDiagonalSequence = true;
+            negDiagonal.isDiagonalSequence = true;
+            box.isDiagonalSequence = true;
+            return true;
+        }
+        if (isPair(box, leftDiagonal) && isPair(box, rightDiagonal))
+        {
+            leftDiagonal.isDiagonalSequence = true;
+            rightDiagonal.isDiagonalSequence = true;
+            box.isDiagonalSequence = true;
+            return true;
+        }
         return false;
     }
 
@@ -225,6 +302,7 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             right = board.board[right.rowNum][right.colNum + 1];
                         }
+                        right = board.board[box.rowNum + 1][box.colNum];
                         while (right.colNum - 1 >= 0 && board.board[right.rowNum][right.colNum - 1].boxContent != BoxContent.Empty)
                         {
                             if (isPair(right, board.board[right.rowNum][right.colNum - 1]))
@@ -233,7 +311,7 @@ public class GameManager : MonoBehaviour
                                 board.board[right.rowNum][right.colNum - 1].isSequence = false;
                             }
                             else { break; }
-                            right = board.board[right.rowNum][right.colNum + 1];
+                            right = board.board[right.rowNum][right.colNum - 1];
                         }
                         return;
                     }
@@ -265,6 +343,7 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             left = board.board[left.rowNum][left.colNum + 1];
                         }
+                        left = board.board[box.rowNum - 1][box.colNum];
                         while (left.colNum - 1 >= 0 && board.board[left.rowNum][left.colNum - 1].boxContent != BoxContent.Empty)
                         {
                             if (isPair(left, board.board[left.rowNum][left.colNum - 1]))
@@ -273,7 +352,7 @@ public class GameManager : MonoBehaviour
                                 board.board[left.rowNum][left.colNum - 1].isSequence = false;
                             }
                             else { break; }
-                            left = board.board[left.rowNum][left.colNum + 1];
+                            left = board.board[left.rowNum][left.colNum - 1];
                         }
                         return;
                     }
@@ -303,9 +382,10 @@ public class GameManager : MonoBehaviour
                                 board.board[up.rowNum + 1][up.colNum].isSequence = false;
                             }
                             else { break; }
-                            up = board.board[up.rowNum + 1][up.colNum + 1];
+                            up = board.board[up.rowNum + 1][up.colNum];
                         }
-                        while (up.colNum - 1 >= 0 && board.board[up.rowNum - 1][up.colNum].boxContent != BoxContent.Empty)
+                        up = board.board[box.rowNum][box.colNum + 1];
+                        while (up.rowNum - 1 >= 0 && board.board[up.rowNum - 1][up.colNum].boxContent != BoxContent.Empty)
                         {
                             if (isPair(up, board.board[up.rowNum - 1][up.colNum]))
                             {
@@ -313,7 +393,7 @@ public class GameManager : MonoBehaviour
                                 board.board[up.rowNum - 1][up.colNum].isSequence = false;
                             }
                             else { break; }
-                            up = board.board[up.rowNum][up.colNum + 1];
+                            up = board.board[up.rowNum - 1][up.colNum];
                         }
                         return;
                     }
@@ -343,8 +423,9 @@ public class GameManager : MonoBehaviour
                                 board.board[down.rowNum + 1][down.colNum].isSequence = false;
                             }
                             else { break; }
-                            down = board.board[down.rowNum + 1][down.colNum + 1];
+                            down = board.board[down.rowNum + 1][down.colNum];
                         }
+                        down = board.board[box.rowNum][box.colNum - 1];
                         while (down.colNum - 1 >= 0 && board.board[down.rowNum - 1][down.colNum].boxContent != BoxContent.Empty)
                         {
                             if (isPair(down, board.board[down.rowNum - 1][down.colNum]))
@@ -353,7 +434,7 @@ public class GameManager : MonoBehaviour
                                 board.board[down.rowNum - 1][down.colNum].isSequence = false;
                             }
                             else { break; }
-                            down = board.board[down.rowNum][down.colNum + 1];
+                            down = board.board[down.rowNum - 1][down.colNum];
                         }
                         return;
                     }
@@ -365,7 +446,7 @@ public class GameManager : MonoBehaviour
 
     public void processPlay(BoardBox box)
     {
-        // check if player played three in a row (boosts score more)
+        // check if player played three in a row
         if (checkForSequence(box))
         {
             // played a sequence, factor multiplier in
@@ -373,8 +454,13 @@ public class GameManager : MonoBehaviour
             currentPlayer.score -= 3;
             currentPlayer.score += 6;
         }
+
         // check if player trumped other player
         checkForTrump(box);
+
+        // update score UI
+        UIManager.instance.p1ScoreText.text = "P1: " + player1.score;
+        UIManager.instance.p2ScoreText.text = "P2: " + player2.score;
 
         // swap current player
         turn();
@@ -409,7 +495,7 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate()
     {
-       
+       /*
        if(status == GameStatus.Fight)
         {
 
@@ -426,7 +512,7 @@ public class GameManager : MonoBehaviour
             {
                 currentPlayer = player2;
             }
-        }
+        }*/
     }
     //Game start and time running
     

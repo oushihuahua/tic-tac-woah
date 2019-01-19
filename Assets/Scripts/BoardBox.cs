@@ -18,7 +18,7 @@ public class BoardBox : MonoBehaviour
     //[System.NonSerialized]
     public BoxContent boxContent;
     public bool isSequence;
-
+    public bool isDiagonalSequence;
     // variable to reference which piece is on this box
     [System.NonSerialized]
     public Piece currentPiece;
@@ -32,6 +32,7 @@ public class BoardBox : MonoBehaviour
         });
 
         isSequence = false;
+        isDiagonalSequence = false;
         currentPiece = null;
     }
 }

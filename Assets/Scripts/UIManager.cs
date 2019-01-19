@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     public Text currentPlayerText;
     public Text currentModeText;
     public Text errorText;
+    public Text p1ScoreText;
+    public Text p2ScoreText;
 
     private void Awake()
     {
@@ -100,11 +102,11 @@ public class UIManager : MonoBehaviour
     public void OnClickStartGameButton()
     {
         GameManager.instance.timer.globalStartTime = Time.fixedTime;
-        GameManager.instance.status = GameStatus.SetBarrier;
+        //GameManager.instance.status = GameStatus.SetBarrier;
         GameManager.instance.currentPlayer = GameManager.instance.player1;
-        GameManager.instance.currentTypeMode = Type.Barrier;
-        currentModeText.text = "Set Barrier Mode";
-        //GameManager.instance.status = GameStatus.Fight;
+        //GameManager.instance.currentTypeMode = Type.Barrier;
+        //currentModeText.text = "Set Barrier Mode";
+        GameManager.instance.status = GameStatus.Fight;
     }
 
 }
