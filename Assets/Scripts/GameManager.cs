@@ -277,6 +277,7 @@ public class GameManager : MonoBehaviour
 
     void checkForTrump(BoardBox box)
     {
+        BoardBox barrierBox = null;
         if (box.rowNum + 2 < amtRows)
         {
             BoardBox right = board.board[box.rowNum + 1][box.colNum];
@@ -289,6 +290,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         right.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = right;
                         right.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score & fix booleans
                         right.isSequence = false;
@@ -313,6 +315,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             right = board.board[right.rowNum][right.colNum - 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -330,6 +334,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         left.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = left;
                         left.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         left.isSequence = false;
@@ -354,6 +359,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             left = board.board[left.rowNum][left.colNum - 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -371,6 +378,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         up.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = up;
                         up.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         up.isSequence = false;
@@ -395,6 +403,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             up = board.board[up.rowNum - 1][up.colNum];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -412,6 +422,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         down.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = down;
                         down.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         down.isSequence = false;
@@ -436,6 +447,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             down = board.board[down.rowNum - 1][down.colNum];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -454,6 +467,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         next.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = next;
                         next.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         next.isDiagonalSequence = false;
@@ -480,6 +494,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             next = board.board[next.rowNum - 1][next.colNum - 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -497,6 +513,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         next.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = next;
                         next.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         next.isDiagonalSequence = false;
@@ -523,6 +540,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             next = board.board[next.rowNum - 1][next.colNum - 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -540,6 +559,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         next.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = next;
                         next.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         next.isDiagonalSequence = false;
@@ -566,6 +586,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             next = board.board[next.rowNum - 1][next.colNum + 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -583,6 +605,7 @@ public class GameManager : MonoBehaviour
                     {
                         // change sprite of middle box to a barrier
                         next.GetComponent<Image>().sprite = barrierSprite;
+                        barrierBox = next;
                         next.currentPiece.owner.score -= 2;
                         // refactor the opposing player's score
                         next.isDiagonalSequence = false;
@@ -609,6 +632,8 @@ public class GameManager : MonoBehaviour
                             else { break; }
                             next = board.board[next.rowNum - 1][next.colNum + 1];
                         }
+                        barrierBox.boxContent = BoxContent.Barrier;
+                        barrierBox.currentPiece = null;
                         return;
                     }
                 }
@@ -667,7 +692,7 @@ public class GameManager : MonoBehaviour
 
     void FixedUpdate()
     {
-       /*
+       
        if(status == GameStatus.Fight)
         {
 
@@ -684,7 +709,7 @@ public class GameManager : MonoBehaviour
             {
                 currentPlayer = player2;
             }
-        }*/
+        }
     }
     //Game start and time running
     

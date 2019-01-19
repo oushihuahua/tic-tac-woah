@@ -1041,6 +1041,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4473125650170860120, guid: 469b0c5de3a524947a051c5328174e18,
+        type: 3}
+      propertyPath: m_Text
+      value: Set Barrier Mode
+      objectReference: {fileID: 0}
     - target: {fileID: 4473125650391241030, guid: 469b0c5de3a524947a051c5328174e18,
         type: 3}
       propertyPath: m_LocalPosition.x
