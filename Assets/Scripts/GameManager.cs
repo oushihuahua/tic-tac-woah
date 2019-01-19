@@ -441,7 +441,179 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        // TODO: diagonal?
+        // diagonal cases
+        if (box.rowNum + 2 < amtRows && box.colNum - 2 >= 0)
+        {
+            BoardBox next = board.board[box.rowNum + 1][box.colNum - 1];
+            if (next.boxContent != BoxContent.Empty)
+            {
+                if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
+                {
+                    BoardBox nextNext = board.board[box.rowNum + 2][box.colNum - 2];
+                    if (isPair(box, nextNext))
+                    {
+                        // change sprite of middle box to a barrier
+                        next.GetComponent<Image>().sprite = barrierSprite;
+                        next.currentPiece.owner.score -= 2;
+                        // refactor the opposing player's score
+                        next.isDiagonalSequence = false;
+                        while (next.rowNum + 1 < amtRows && next.colNum + 1 < amtColumns
+                               && board.board[next.rowNum + 1][next.colNum + 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum + 1][next.colNum + 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum + 1][next.colNum+1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum + 1][next.colNum+1];
+                        }
+                        next = board.board[box.rowNum + 1][box.colNum - 1];
+                        while (next.rowNum - 1 >= 0 && next.colNum - 1 >= 0
+                               && board.board[next.rowNum - 1][next.colNum - 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum - 1][next.colNum - 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum - 1][next.colNum - 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum - 1][next.colNum - 1];
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+        if (box.rowNum - 2 >= 0 && box.colNum + 2 < amtColumns)
+        {
+            BoardBox next = board.board[box.rowNum - 1][box.colNum + 1];
+            if (next.boxContent != BoxContent.Empty)
+            {
+                if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
+                {
+                    BoardBox nextNext = board.board[box.rowNum - 2][box.colNum + 2];
+                    if (isPair(box, nextNext))
+                    {
+                        // change sprite of middle box to a barrier
+                        next.GetComponent<Image>().sprite = barrierSprite;
+                        next.currentPiece.owner.score -= 2;
+                        // refactor the opposing player's score
+                        next.isDiagonalSequence = false;
+                        while (next.rowNum + 1 < amtRows && next.colNum + 1 < amtColumns
+                               && board.board[next.rowNum + 1][next.colNum + 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum + 1][next.colNum + 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum + 1][next.colNum + 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum + 1][next.colNum + 1];
+                        }
+                        next = board.board[box.rowNum - 1][box.colNum + 1];
+                        while (next.rowNum - 1 >= 0 && next.colNum - 1 >= 0
+                               && board.board[next.rowNum - 1][next.colNum - 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum - 1][next.colNum - 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum - 1][next.colNum - 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum - 1][next.colNum - 1];
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+        if (box.rowNum - 2 >= 0 && box.colNum - 2 >= 0)
+        {
+            BoardBox next = board.board[box.rowNum - 1][box.colNum - 1];
+            if (next.boxContent != BoxContent.Empty)
+            {
+                if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
+                {
+                    BoardBox nextNext = board.board[box.rowNum - 2][box.colNum - 2];
+                    if (isPair(box, nextNext))
+                    {
+                        // change sprite of middle box to a barrier
+                        next.GetComponent<Image>().sprite = barrierSprite;
+                        next.currentPiece.owner.score -= 2;
+                        // refactor the opposing player's score
+                        next.isDiagonalSequence = false;
+                        while (next.rowNum + 1 < amtRows && next.colNum - 1 >= 0
+                               && board.board[next.rowNum + 1][next.colNum - 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum + 1][next.colNum - 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum + 1][next.colNum - 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum + 1][next.colNum - 1];
+                        }
+                        next = board.board[box.rowNum - 1][box.colNum - 1];
+                        while (next.rowNum - 1 >= 0 && next.colNum + 1 < amtColumns
+                               && board.board[next.rowNum - 1][next.colNum + 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum - 1][next.colNum + 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum - 1][next.colNum + 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum - 1][next.colNum + 1];
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+        if (box.rowNum + 2 < amtRows && box.colNum + 2 < amtColumns)
+        {
+            BoardBox next = board.board[box.rowNum + 1][box.colNum + 1];
+            if (next.boxContent != BoxContent.Empty)
+            {
+                if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
+                {
+                    BoardBox nextNext = board.board[box.rowNum + 2][box.colNum + 2];
+                    if (isPair(box, nextNext))
+                    {
+                        // change sprite of middle box to a barrier
+                        next.GetComponent<Image>().sprite = barrierSprite;
+                        next.currentPiece.owner.score -= 2;
+                        // refactor the opposing player's score
+                        next.isDiagonalSequence = false;
+                        while (next.rowNum + 1 < amtRows && next.colNum - 1 >= 0
+                               && board.board[next.rowNum + 1][next.colNum - 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum + 1][next.colNum - 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum + 1][next.colNum - 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum + 1][next.colNum - 1];
+                        }
+                        next = board.board[box.rowNum + 1][box.colNum + 1];
+                        while (next.rowNum - 1 >= 0 && next.colNum + 1 < amtColumns
+                               && board.board[next.rowNum - 1][next.colNum + 1].boxContent != BoxContent.Empty)
+                        {
+                            if (isPair(next, board.board[next.rowNum - 1][next.colNum + 1]))
+                            {
+                                --next.currentPiece.owner.score;
+                                board.board[next.rowNum - 1][next.colNum + 1].isDiagonalSequence = false;
+                            }
+                            else { break; }
+                            next = board.board[next.rowNum - 1][next.colNum + 1];
+                        }
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public void processPlay(BoardBox box)
