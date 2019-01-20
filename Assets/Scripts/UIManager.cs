@@ -9,11 +9,18 @@ public class UIManager : MonoBehaviour
     public GameObject pieceChoicePanel;
     public GameObject piecePrefab;
 
+    public Button barrierButton;
+    public Button rockButton;
+    public Button paperButton;
+    public Button scissorButton;
+
     public Text currentPlayerText;
     public Text currentModeText;
     public Text errorText;
     public Text p1ScoreText;
     public Text p2ScoreText;
+
+
 
     private void Awake()
     {
@@ -43,16 +50,15 @@ public class UIManager : MonoBehaviour
 
     public void OnClickBox(BoardBox clickedBox)
     {
+        PlayerColor curColor = GameManager.instance.currentPlayer.color;
         if (GameManager.instance.status == GameStatus.Fight)
         {
             if (clickedBox.boxContent == BoxContent.Barrier) {
                 StartCoroutine(flashErrorText("Can't place anything in a box with a barrier!"));
                 return;
-            }
-
-            Color curColor = GameManager.instance.currentPlayer.color;
+            }         
             int buffer = 0;
-            if (curColor == Color.Blue)
+            if (curColor == PlayerColor.Blue)
             {
                 buffer += 3;
             }
@@ -66,22 +72,48 @@ public class UIManager : MonoBehaviour
                 ++GameManager.instance.currentPlayer.score;
                 GameManager.instance.processPlay(clickedBox);
             }
+        }else if(GameManager.instance.status == GameStatus.SetBarrier)
+        {
+            if (clickedBox.boxContent == BoxContent.Empty)
+            {
+                //GameObject newPiece = Instantiate(piecePrefab, clickedBox.transform);
+                clickedBox.GetComponent<Image>().sprite = GameManager.instance.pieceSprites[6];
+                //dont set box content here, just remember all the barriers
+                clickedBox.boxContent = BoxContent.Barrier;
+                if (curColor == PlayerColor.Blue)
+                {
+                    clickedBox.barrierInfo[0] = true;
+                }
+                else
+                    clickedBox.barrierInfo[1] = true;
+            }else if(clickedBox.boxContent == BoxContent.Barrier)
+            {
+                clickedBox.GetComponent<Image>().sprite = GameManager.instance.pieceSprites[7];
+                clickedBox.boxContent = BoxContent.Empty;
+                if (curColor == PlayerColor.Blue)
+                {
+                    clickedBox.barrierInfo[0] = false;
+                }
+                else
+                    clickedBox.barrierInfo[1] = false;
+            }
         }
+
     }
 
     public void OnClickModeButton(string type)
     {
-        if (type == "rock" && GameManager.instance.status != GameStatus.SetBarrier)
+        if (type == "rock" && GameManager.instance.status == GameStatus.Fight)
         {
             GameManager.instance.currentTypeMode = Type.Rock;
             currentModeText.text = "Rock Mode";
         }
-        else if (type == "scissor" && GameManager.instance.status != GameStatus.SetBarrier)
+        else if (type == "scissor" && GameManager.instance.status == GameStatus.Fight)
         {
             GameManager.instance.currentTypeMode = Type.Scissors;
             currentModeText.text = "Scissors Mode";
         }
-        else if (type == "paper" && GameManager.instance.status != GameStatus.SetBarrier)
+        else if (type == "paper" && GameManager.instance.status == GameStatus.Fight)
         {
             GameManager.instance.currentTypeMode = Type.Paper;
             currentModeText.text = "Paper Mode";
@@ -101,12 +133,18 @@ public class UIManager : MonoBehaviour
     }
     public void OnClickStartGameButton()
     {
-        GameManager.instance.timer.globalStartTime = Time.fixedTime;
-        GameManager.instance.status = GameStatus.SetBarrier;
-        GameManager.instance.currentPlayer = GameManager.instance.player1;
-        GameManager.instance.currentTypeMode = Type.Barrier;
+        GameManager.instance.startGame();
         currentModeText.text = "Set Barrier Mode";
+        rockButton.interactable = false;
+        paperButton.interactable = false;
+        scissorButton.interactable = false;
         //GameManager.instance.status = GameStatus.Fight;
     }
-
+    public void reAbleButtons()
+    {
+        barrierButton.interactable = false;
+        rockButton.interactable = true;
+        paperButton.interactable = true;
+        scissorButton.interactable = true;
+    }
 }

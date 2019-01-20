@@ -7,6 +7,6 @@ public class Player : MonoBehaviour
     //[System.NonSerialized]
     public int score;
     //color also stands for ID
-    public Color color;
+    public PlayerColor color;
 
 }

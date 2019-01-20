@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Color { Red, Blue };
+public enum PlayerColor { Red, Blue };
 public enum GameStatus {Idle, SetBarrier, Fight, Finish};
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Player player2;
     public Player currentPlayer;
     public UIManager uimanager;
+    public CountDownTimer countDownTimer;
 
     public GameStatus status;
 
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
                 box.GetComponent<BoardBox>().rowNum = i;
                 box.GetComponent<BoardBox>().colNum = j;
                 box.GetComponent<BoardBox>().boxContent=BoxContent.Empty;
-
+                
                 // position the box's gameobject
                 positionBox(box.GetComponent<BoardBox>());
 
@@ -663,6 +664,8 @@ public class GameManager : MonoBehaviour
         turn();
     }
 
+    //Program start
+    //mainly for board set up
     void Start()
     {
 
@@ -673,44 +676,123 @@ public class GameManager : MonoBehaviour
        
     }
 
+    //Game start.(After player hit StartGame button)
+    //call by UIManager
+    public void startGame()
+    {
+        timer.globalStartTime = Time.fixedTime;
+        status = GameStatus.SetBarrier;
+        currentPlayer = GameManager.instance.player1;
+        currentTypeMode = Type.Barrier;
+        countDownTimer.setTime((int)barrierTime);
+    }
+    void initialFightStatus()
+    {
+        //TBC
+        //1.process barriers
+
+        setBarriers();
+        turn();
+        uimanager.reAbleButtons();
+        currentTypeMode = Type.Rock;
+        uimanager.OnClickModeButton("rock");
+    }
+
     void turn()
     {
         if (currentPlayer==player1)
         {
+            Camera.main.backgroundColor = Color.red;
             currentPlayer = player2;
         }
         else
         {
+            Camera.main.backgroundColor = Color.blue;
             currentPlayer = player1;
+        }
+
+        //reset timer
+        if (status == GameStatus.SetBarrier)
+            countDownTimer.setTime((int)barrierTime);
+        else if (status == GameStatus.Fight)
+            countDownTimer.setTime((int)everyTurnMaxTime);
+    }
+
+    //this function happen once when first player finish setting berriers
+    //this function clear all barrier images and boxcontent on board
+    void resetBoard()
+    {
+        for (int i = 0; i < amtRows; ++i)
+        {
+            for (int j = 0; j < amtColumns; ++j)
+            {
+                if (board.board[i][j].boxContent == BoxContent.Barrier)
+                {
+                    board.board[i][j].boxContent = BoxContent.Empty;
+                    board.board[i][j].GetComponent<Image>().sprite = pieceSprites[7];
+                }
+            }
         }
     }
 
+    //this function happen once when Barrier status end
+    //process all barriers and decide which box is barrier(set images and boxcontent)
+    void setBarriers()
+    {
+        for (int i = 0; i < amtRows; ++i)
+        {
+            for (int j = 0; j < amtColumns; ++j)
+            {
+                if (board.board[i][j].barrierInfo[0] || board.board[i][j].barrierInfo[1])
+                {
+                    board.board[i][j].boxContent = BoxContent.Barrier;
+                    board.board[i][j].GetComponent<Image>().sprite = pieceSprites[6];
+                }
+            }
+        }
+    }
+
+    //see FixedUpdate function
     void Update()
     {
         
     }
 
+    //main update function
     void FixedUpdate()
     {
        
-       if(status == GameStatus.Fight)
+       if(status == GameStatus.SetBarrier)
         {
+            //player 2's turn to set barrier 
+            if(Time.fixedTime - timer.globalStartTime > barrierTime && currentPlayer == player1)
+            {
+                //should only get into there once
+                resetBoard();
+                turn();
 
-        }else if(status == GameStatus.SetBarrier)
-        {
-            if (Time.fixedTime - timer.globalStartTime > 2*barrierTime)
+            }
+            //From Set Barrier mode to fight mode, only enter once
+            else if (Time.fixedTime - timer.globalStartTime > 2 * barrierTime)
             {
                 status = GameStatus.Fight;
-                //TBC
-                //1.process barriers
-                //2.reset timer
-                //3.change palyer
-            }else if(Time.fixedTime - timer.globalStartTime > barrierTime && currentPlayer == player1)
+                Debug.Log("Status: Fight");
+                initialFightStatus();
+            }
+            else
             {
-                currentPlayer = player2;
+
             }
         }
+        else if (status == GameStatus.Fight)
+        {
+
+        }
+        else
+        {
+
+        }
     }
-    //Game start and time running
+    
     
 }

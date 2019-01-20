@@ -22,6 +22,8 @@ public class BoardBox : MonoBehaviour
     // variable to reference which piece is on this box
     [System.NonSerialized]
     public Piece currentPiece;
+    //small structure help to store barrier info in the Barrier status
+    public bool[] barrierInfo;
 
     private void Start()
     {
@@ -30,6 +32,7 @@ public class BoardBox : MonoBehaviour
         {
             UIManager.instance.OnClickBox(gameObject.GetComponent<BoardBox>());
         });
+        barrierInfo = new bool[2] {false,false };
 
         isSequence = false;
         isDiagonalSequence = false;
