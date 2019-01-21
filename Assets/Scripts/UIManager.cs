@@ -127,16 +127,25 @@ public class UIManager : MonoBehaviour
     {
         if (type == "rock" && GameManager.instance.status == GameStatus.Fight)
         {
+            rockButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xb9, 0x45,0xff);
+            scissorButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+            paperButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
             GameManager.instance.currentTypeMode = Type.Rock;
             currentModeText.text = "Rock Mode";
         }
         else if (type == "scissor" && GameManager.instance.status == GameStatus.Fight)
         {
+            scissorButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xb9, 0x45, 0xff);
+            rockButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+            paperButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
             GameManager.instance.currentTypeMode = Type.Scissors;
             currentModeText.text = "Scissors Mode";
         }
         else if (type == "paper" && GameManager.instance.status == GameStatus.Fight)
         {
+            paperButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xb9, 0x45, 0xff);
+            scissorButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+            rockButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
             GameManager.instance.currentTypeMode = Type.Paper;
             currentModeText.text = "Paper Mode";
         }
@@ -164,9 +173,13 @@ public class UIManager : MonoBehaviour
         paperButton.interactable = false;
         scissorButton.interactable = false;
 
+        paperButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+        scissorButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+        rockButton.gameObject.GetComponent<Image>().color = new Color32(0xff, 0xff, 0xff, 0xff);
+
         //status thing all changed by GameManager
         //GameManager.instance.status = GameStatus.Fight;
-        startGameButton.interactable = false;
+        startGameButton.gameObject.GetComponentInChildren<Text>().text = "Restart Game";
     }
     public void reAbleButtons()
     {

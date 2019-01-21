@@ -716,6 +716,7 @@ public class GameManager : MonoBehaviour
     {
         resetBoard();
         resetBox();
+        Camera.main.backgroundColor = new Color32(0x31, 0x4d, 0x79, 0xff);
         player1.score = 0;
         player2.score = 0;
         timer.globalStartTime = Time.fixedTime;
@@ -741,12 +742,14 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer==player1)
         {
+            //red color
             Camera.main.backgroundColor = new Color32(0xff, 0x65, 0x62, 0xff);
             currentPlayer = player2;
             //Debug.Log(currentPlayer);
         }
         else
         {
+            //blue color
             Camera.main.backgroundColor = new Color32(0x31, 0x4d, 0x79, 0xff); 
             currentPlayer = player1;
             //Debug.Log(currentPlayer);
