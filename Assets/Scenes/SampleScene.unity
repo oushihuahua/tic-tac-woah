@@ -1193,7 +1193,7 @@ PrefabInstance:
     - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
         type: 3}
       propertyPath: barrierTime
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
         type: 3}

@@ -707,7 +707,7 @@ public class GameManager : MonoBehaviour
         board.gameObject.transform.position = new Vector3 (Screen.width*0.5f,Screen.height*0.5f,0.0f);
         status = GameStatus.Idle;
         setupBoard();
-       
+        Screen.SetResolution(960, 540, false);
     }
 
     //Game start.(After player hit StartGame button)
