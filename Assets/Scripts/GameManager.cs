@@ -660,6 +660,7 @@ public class GameManager : MonoBehaviour
             }
         }
         Debug.Log("Game Over");
+        status = GameStatus.Finish;
         return true;
     }
 
@@ -713,6 +714,10 @@ public class GameManager : MonoBehaviour
     //call by UIManager
     public void startGame()
     {
+        resetBoard();
+        resetBox();
+        player1.score = 0;
+        player2.score = 0;
         timer.globalStartTime = Time.fixedTime;
         status = GameStatus.SetBarrier;
         currentPlayer = GameManager.instance.player1;
@@ -770,6 +775,21 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    //only use when restart the game
+    void resetBox()
+    {
+        for (int i = 0; i < amtRows; ++i)
+        {
+            for (int j = 0; j < amtColumns; ++j)
+            {
+                if (board.board[i][j].boxContent != BoxContent.Empty)
+                {
+                    board.board[i][j].init();
+                   
+                }
+            }
+        }
+    }
 
     //this function happen once when Barrier status end
     //process all barriers and decide which box is barrier(set images and boxcontent)
@@ -823,7 +843,8 @@ public class GameManager : MonoBehaviour
         }
         else if (status == GameStatus.Fight)
         {
-
+            if (countDownTimer.timeLeft == 0)
+                turn();
         }
         else
         {

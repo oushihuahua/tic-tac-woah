@@ -25,6 +25,16 @@ public class BoardBox : MonoBehaviour
     //small structure help to store barrier info in the Barrier status
     public bool[] barrierInfo;
 
+
+    public void init()
+    {
+        barrierInfo = new bool[2] { false, false };
+
+        isSequence = false;
+        isDiagonalSequence = false;
+        currentPiece = null;
+    }
+
     private void Start()
     {
         Button button = GetComponent<Button>();
@@ -32,10 +42,6 @@ public class BoardBox : MonoBehaviour
         {
             UIManager.instance.OnClickBox(gameObject.GetComponent<BoardBox>());
         });
-        barrierInfo = new bool[2] {false,false };
-
-        isSequence = false;
-        isDiagonalSequence = false;
-        currentPiece = null;
+        init();
     }
 }

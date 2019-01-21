@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     public Button paperButton;
     public Button scissorButton;
 
+    public Button startGameButton;
+
     public Text currentPlayerText;
     public Text currentModeText;
     public Text errorText;
@@ -87,6 +89,7 @@ public class UIManager : MonoBehaviour
                         p1Win.gameObject.SetActive(true);
                         p2Win.gameObject.SetActive(true);
                     }
+                    startGameButton.interactable = true;
                 }
             }
         }else if(GameManager.instance.status == GameStatus.SetBarrier)
@@ -153,11 +156,17 @@ public class UIManager : MonoBehaviour
     public void OnClickStartGameButton()
     {
         GameManager.instance.startGame();
+        barrierButton.interactable = true;
+        p1Win.gameObject.SetActive(false);
+        p2Win.gameObject.SetActive(false);
         currentModeText.text = "Set Barrier Mode";
         rockButton.interactable = false;
         paperButton.interactable = false;
         scissorButton.interactable = false;
+
+        //status thing all changed by GameManager
         //GameManager.instance.status = GameStatus.Fight;
+        startGameButton.interactable = false;
     }
     public void reAbleButtons()
     {

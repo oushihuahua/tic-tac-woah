@@ -7,7 +7,7 @@ public class CountDownTimer : MonoBehaviour
 {
     // Start is called before the first frame update
    
-    private int timeLeft;
+    public int timeLeft;
     private int periodLast;
     private float startTime;
     private Text text;
