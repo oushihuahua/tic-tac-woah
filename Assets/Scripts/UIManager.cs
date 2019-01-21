@@ -20,7 +20,8 @@ public class UIManager : MonoBehaviour
     public Text p1ScoreText;
     public Text p2ScoreText;
 
-
+    public Text p1Win;
+    public Text p2Win;
 
     private void Awake()
     {
@@ -73,6 +74,20 @@ public class UIManager : MonoBehaviour
                 clickedBox.currentPiece = newPiece.GetComponent<Piece>();
                 ++GameManager.instance.currentPlayer.score;
                 GameManager.instance.processPlay(clickedBox);
+                if (GameManager.instance.checkGameOver())
+                {
+                    //game is over right now, no place to place any piece now.
+                    int res=GameManager.instance.gameOver();
+                    if (res == 0)
+                        p1Win.gameObject.SetActive(true);
+                    else if (res == 1)
+                        p2Win.gameObject.SetActive(true);
+                    else if (res == 2)
+                    {
+                        p1Win.gameObject.SetActive(true);
+                        p2Win.gameObject.SetActive(true);
+                    }
+                }
             }
         }else if(GameManager.instance.status == GameStatus.SetBarrier)
         {

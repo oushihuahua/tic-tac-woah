@@ -645,6 +645,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool checkGameOver()
+    {
+        for (int i = 0; i < amtRows; ++i)
+        {
+            for (int j = 0; j < amtColumns; ++j)
+            {
+                if (board.board[i][j].boxContent == BoxContent.Empty)
+                {
+                    //Debug.Log("not over yet");
+                    return false;
+                }
+                    
+            }
+        }
+        Debug.Log("Game Over");
+        return true;
+    }
+
+    //a function to deal with game over things
+    //bascially just compare score and return  to UImanager which player won
+    //return 0 for palyer 1, 1 for palyer 2, 2 for draw
+    public int gameOver()
+    {
+        if (player1.score > player2.score)
+            return 0;
+        else if (player1.score < player2.score)
+            return 1;
+        else
+            return 2;
+    }
     public void processPlay(BoardBox box)
     {
         // check if player played three in a row
@@ -708,13 +738,13 @@ public class GameManager : MonoBehaviour
         {
             Camera.main.backgroundColor = Color.red;
             currentPlayer = player2;
-            Debug.Log(currentPlayer);
+            //Debug.Log(currentPlayer);
         }
         else
         {
             Camera.main.backgroundColor = Color.blue;
             currentPlayer = player1;
-            Debug.Log(currentPlayer);
+            //Debug.Log(currentPlayer);
         }
 
         //reset timer
@@ -732,7 +762,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < amtColumns; ++j)
             {
-                if (board.board[i][j].boxContent == BoxContent.Barrier)
+                if (board.board[i][j].boxContent != BoxContent.Empty)
                 {
                     board.board[i][j].boxContent = BoxContent.Empty;
                     board.board[i][j].GetComponent<Image>().sprite = pieceSprites[7];
