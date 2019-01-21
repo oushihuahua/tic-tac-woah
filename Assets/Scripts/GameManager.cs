@@ -741,13 +741,13 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer==player1)
         {
-            Camera.main.backgroundColor = Color.red;
+            Camera.main.backgroundColor = new Color32(0xff, 0x65, 0x62, 0xff);
             currentPlayer = player2;
             //Debug.Log(currentPlayer);
         }
         else
         {
-            Camera.main.backgroundColor = Color.blue;
+            Camera.main.backgroundColor = new Color32(0x31, 0x4d, 0x79, 0xff); 
             currentPlayer = player1;
             //Debug.Log(currentPlayer);
         }
@@ -782,11 +782,8 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < amtColumns; ++j)
             {
-                if (board.board[i][j].boxContent != BoxContent.Empty)
-                {
-                    board.board[i][j].init();
-                   
-                }
+                board.board[i][j].init();
+                //Debug.Log("we cool here");
             }
         }
     }

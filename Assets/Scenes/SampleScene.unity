@@ -685,6 +685,10 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.990566
       objectReference: {fileID: 0}
+    - target: {fileID: 1532645697, guid: 469b0c5de3a524947a051c5328174e18, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3234963086109914389, guid: 469b0c5de3a524947a051c5328174e18,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1179,12 +1183,12 @@ PrefabInstance:
     - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
         type: 3}
       propertyPath: amtRows
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
         type: 3}
       propertyPath: amtColumns
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6753003484796047894, guid: 9717f6e2f6a804645aa2fa0eadc38d2a,
         type: 3}

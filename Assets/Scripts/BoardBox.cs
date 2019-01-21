@@ -28,8 +28,9 @@ public class BoardBox : MonoBehaviour
 
     public void init()
     {
-        barrierInfo = new bool[2] { false, false };
-
+        barrierInfo = new bool[2];
+        barrierInfo[0] = false;
+        barrierInfo[1] = false;
         isSequence = false;
         isDiagonalSequence = false;
         currentPiece = null;
