@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     //maximum barriers for each player
     public int maxBarriers;
     public Sprite barrierSprite;
+    public int countBarrier;
 
     public Type currentTypeMode;
 
@@ -105,14 +106,16 @@ public class GameManager : MonoBehaviour
         board.transform.localScale=new Vector3(1.1f, 1.1f, 1.0f);
     }
 
+    //box1 and box2 are from same palyer and they are same piece
     bool isPair(BoardBox box1, BoardBox box2)
     {
         if (box1 == null || box2 == null) return false;
-        if (box1.boxContent == BoxContent.Empty || box2.boxContent == BoxContent.Empty) return false;
+        if (box1.boxContent != BoxContent.Piece || box2.boxContent != BoxContent.Piece) return false;
 
         return box1.currentPiece.owner == box2.currentPiece.owner && box1.currentPiece.type == box2.currentPiece.type;
     }
 
+    //three same  piece in a row
     bool checkForSequence(BoardBox box)
     {
         BoardBox leftBox = null;
@@ -282,7 +285,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum + 2 < amtRows)
         {
             BoardBox right = board.board[box.rowNum + 1][box.colNum];
-            if (right.boxContent != BoxContent.Empty)
+            if (right.boxContent == BoxContent.Piece)
             {
                 if (right.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, right.currentPiece) && right.isSequence)
                 {
@@ -326,7 +329,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum - 2 >= 0)
         {
             BoardBox left = board.board[box.rowNum - 1][box.colNum];
-            if (left.boxContent != BoxContent.Empty)
+            if (left.boxContent == BoxContent.Piece)
             {
                 if (left.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, left.currentPiece) && left.isSequence)
                 {
@@ -370,7 +373,7 @@ public class GameManager : MonoBehaviour
         if (box.colNum + 2 < amtColumns)
         {
             BoardBox up = board.board[box.rowNum][box.colNum + 1];
-            if (up.boxContent != BoxContent.Empty)
+            if (up.boxContent == BoxContent.Piece)
             {
                 if (up.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, up.currentPiece) && up.isSequence)
                 {
@@ -414,7 +417,7 @@ public class GameManager : MonoBehaviour
         if (box.colNum - 2 >= 0)
         {
             BoardBox down = board.board[box.rowNum][box.colNum - 1];
-            if (down.boxContent != BoxContent.Empty)
+            if (down.boxContent == BoxContent.Piece)
             {
                 if (down.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, down.currentPiece) && down.isSequence)
                 {
@@ -459,7 +462,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum + 2 < amtRows && box.colNum - 2 >= 0)
         {
             BoardBox next = board.board[box.rowNum + 1][box.colNum - 1];
-            if (next.boxContent != BoxContent.Empty)
+            if (next.boxContent == BoxContent.Piece)
             {
                 if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
                 {
@@ -505,7 +508,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum - 2 >= 0 && box.colNum + 2 < amtColumns)
         {
             BoardBox next = board.board[box.rowNum - 1][box.colNum + 1];
-            if (next.boxContent != BoxContent.Empty)
+            if (next.boxContent == BoxContent.Piece)
             {
                 if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
                 {
@@ -551,7 +554,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum - 2 >= 0 && box.colNum - 2 >= 0)
         {
             BoardBox next = board.board[box.rowNum - 1][box.colNum - 1];
-            if (next.boxContent != BoxContent.Empty)
+            if (next.boxContent == BoxContent.Piece)
             {
                 if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
                 {
@@ -597,7 +600,7 @@ public class GameManager : MonoBehaviour
         if (box.rowNum + 2 < amtRows && box.colNum + 2 < amtColumns)
         {
             BoardBox next = board.board[box.rowNum + 1][box.colNum + 1];
-            if (next.boxContent != BoxContent.Empty)
+            if (next.boxContent == BoxContent.Piece)
             {
                 if (next.currentPiece.owner != currentPlayer && doesTrump(box.currentPiece, next.currentPiece) && next.isDiagonalSequence)
                 {
@@ -685,6 +688,7 @@ public class GameManager : MonoBehaviour
         currentPlayer = GameManager.instance.player1;
         currentTypeMode = Type.Barrier;
         countDownTimer.setTime((int)barrierTime);
+        countBarrier = 0;
     }
     void initialFightStatus()
     {
@@ -704,11 +708,13 @@ public class GameManager : MonoBehaviour
         {
             Camera.main.backgroundColor = Color.red;
             currentPlayer = player2;
+            Debug.Log(currentPlayer);
         }
         else
         {
             Camera.main.backgroundColor = Color.blue;
             currentPlayer = player1;
+            Debug.Log(currentPlayer);
         }
 
         //reset timer
@@ -768,6 +774,7 @@ public class GameManager : MonoBehaviour
             if(Time.fixedTime - timer.globalStartTime > barrierTime && currentPlayer == player1)
             {
                 //should only get into there once
+                countBarrier = 0;
                 resetBoard();
                 turn();
 

@@ -51,6 +51,7 @@ public class UIManager : MonoBehaviour
     public void OnClickBox(BoardBox clickedBox)
     {
         PlayerColor curColor = GameManager.instance.currentPlayer.color;
+        //Debug.Log(GameManager.instance.currentPlayer);
         if (GameManager.instance.status == GameStatus.Fight)
         {
             if (clickedBox.boxContent == BoxContent.Barrier) {
@@ -60,6 +61,7 @@ public class UIManager : MonoBehaviour
             int buffer = 0;
             if (curColor == PlayerColor.Blue)
             {
+                
                 buffer += 3;
             }
 
@@ -74,12 +76,13 @@ public class UIManager : MonoBehaviour
             }
         }else if(GameManager.instance.status == GameStatus.SetBarrier)
         {
-            if (clickedBox.boxContent == BoxContent.Empty)
+            if (clickedBox.boxContent == BoxContent.Empty && GameManager.instance.countBarrier<GameManager.instance.maxBarriers)
             {
                 //GameObject newPiece = Instantiate(piecePrefab, clickedBox.transform);
                 clickedBox.GetComponent<Image>().sprite = GameManager.instance.pieceSprites[6];
                 //dont set box content here, just remember all the barriers
                 clickedBox.boxContent = BoxContent.Barrier;
+                GameManager.instance.countBarrier++;
                 if (curColor == PlayerColor.Blue)
                 {
                     clickedBox.barrierInfo[0] = true;
@@ -96,6 +99,7 @@ public class UIManager : MonoBehaviour
                 }
                 else
                     clickedBox.barrierInfo[1] = false;
+                GameManager.instance.countBarrier--;
             }
         }
 
